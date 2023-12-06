@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "inf04-1.C": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }

@@ -1,55 +1,58 @@
-
-.section .rodata
-.scanf_str:
-  .string "%d"
-
-
-
 .global summ
 .global everyday795
 .intel_syntax noprefix
+.data
 .text
 
+scanf_str:
+  .string "%d"
+num:
+ .long 0
+
 summ:
-	push ebp
-    mov ebp, esp
-	mov ecx, [ebp + 8]
-	push ebx
+  push ebp
+  mov ebp, esp
+  mov ecx, [ebp + 8]
+  push ebx
 
 
 .Loop_sum:
-	dec ecx
-	mov eax, [ebp + 12] 
-	mov ebx, [eax + 4 * ecx]
+  dec ecx
+  mov eax, [ebp + 12] 
+  mov ebx, [eax + 4 * ecx]
     mov eax, [ebp + 16]
-	add ebx, [eax + 4 * ecx]
+  add ebx, [eax + 4 * ecx]
     mov eax, [ebp + 20]
-	mov [eax + 4 * ecx], ebx
-	inc ecx
-	loop .Loop_sum
+  mov [eax + 4 * ecx], ebx
+  inc ecx
+  loop .Loop_sum
 
-	pop ebx
-	pop ebp
+  pop ebx
+  pop ebp
 
-	ret
+  ret
 
 
 everyday795:
-  push rbp
+  push ebp
+  push esi
+  push edi
 
-  lea rbp, rax
-  mov rax, rsi
-  lea .scanf_str(rip), rax
-  mov rax, rdi
-  mov $0, eax
-  call __isoc99_scanf@PLT
-  mov rbp, eax
-  mull rbp, eax
-  movl rbp, ebx
-  add ebx, eax
-  mov eax, esi
-  lea .scanf_str(rip), rax
-  mov rax, rdi
-  cal printf@PLT
-  pop rbp
+  lea edi, scanf_str
+  lea esi, num
+  call scanf
+
+  pop edi
+  pop esi
+  
+  mov eax, num
+  imul eax, edi
+  add eax, esi
+
+  lea edi, scanf_str
+  mov esi, eax
+  call printf
+  
+  pop ebp
+
   ret
